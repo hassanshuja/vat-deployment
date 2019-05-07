@@ -26,7 +26,7 @@ export const createPet = async (req, res)  => {
 	if (req.files.image) {
 		var oldpath = req.files.image.file
 		filename = Date.now() + '-' + req.files.image.filename
-		var newpath = '../react/public/images/pets/' + filename
+		var newpath = './react/public/images/pets/' + filename
 	}
 	
 	const newPet = new Pet({
@@ -74,14 +74,14 @@ export const updatePet = async (req, res)  => {
 				if(req.files.newImage) {
 					/* REMOVE OLD IMAGE */
 					if(req.body.image) {
-						if(fs.existsSync('../react/public/images/pets/' + req.body.image)) {
-							fs.unlinkSync('../react/public/images/pets/' + req.body.image)
+						if(fs.existsSync('./react/public/images/pets/' + req.body.image)) {
+							fs.unlinkSync('./react/public/images/pets/' + req.body.image)
 						}
 					}
 					var oldpath = req.files.newImage.file
 					/*  UPLOAD NEW IMAGE */
 					var filename = Date.now() + '-' + req.files.newImage.filename
-					var newpath = '../react/public/images/pets/' + filename
+					var newpath = './react/public/images/pets/' + filename
 					fs.createReadStream(oldpath);
 					var readerStream = fs.createReadStream(oldpath);
 					var writerStream = fs.createWriteStream(newpath);

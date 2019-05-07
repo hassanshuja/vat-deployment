@@ -42,10 +42,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(path.join(__dirname, 'public')));
+
+if(process.env.NODE_ENV === "production"){
+  app.use(express.static("react/build"));
+}
 // set the port
 const port = process.env.PORT || 3001;
 // connect to database
 mongoose.Promise = global.Promise;
+
+
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
   () => {console.log('Database is connected') },
   err => { console.log('Can not connect to the database'+ err)}
