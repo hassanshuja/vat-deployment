@@ -45,6 +45,7 @@ app.use(history());
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(path.join(__dirname, 'public')));
+console.log(process.env.NODE_ENV, __dirname, 'coming innnnnnnnnnnnnnnnnnn');
 
 if(process.env.NODE_ENV === "production"){
   app.use(express.static("react/build"));
