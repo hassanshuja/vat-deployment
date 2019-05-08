@@ -29,6 +29,7 @@ app.use(function(req,res,next){
   next();
 })
 
+
 // const pusher =  new Pusher({
 //   appId: '745676',
 //   key: '92e8a4cbd51aaee54132',
@@ -57,6 +58,10 @@ const port = process.env.PORT || 3001;
 // connect to database
 mongoose.Promise = global.Promise;
 
+var dir = appRoot + '/react/build/images/chats/';
+if (!path.existsSync(dir)) {
+    fs.mkdirSync(dir, 0744);
+}
 
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
   () => {console.log('Database is connected') },
