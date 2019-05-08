@@ -41,7 +41,6 @@ app.use(function(req,res,next){
 // configure app
 app.use(logger('dev'));
 app.use(history());    
-
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(path.join(__dirname, 'public')));
@@ -50,6 +49,9 @@ console.log(process.env.NODE_ENV, __dirname, 'coming innnnnnnnnnnnnnnnnnn');
 if(process.env.NODE_ENV === "production"){
   app.use(express.static("react/build"));
 }
+console.log(__dirname, 'coming outt');
+global.appRoot = path.resolve(__dirname);
+
 // set the port
 const port = process.env.PORT || 3001;
 // connect to database
