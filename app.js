@@ -10,6 +10,8 @@ import SourceMapSupport from 'source-map-support';
 import vetRoutes from './routes/vet.server.route';
 // import Users from './routes/user';
 import config from './models/vet.server.model';
+var history = require('connect-history-api-fallback');
+
 // define our app using express
 const app = express();
 // const Pusher = require('pusher');
@@ -38,6 +40,7 @@ app.use(function(req,res,next){
 // app.use(cors())
 // configure app
 app.use(logger('dev'));
+app.use(history());    
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
