@@ -7,7 +7,7 @@ import { GET_ERRORS, SET_PETS_LIST, SELECT_PET, PET_EDIT_SHOW, REQUEST_HELP_PEND
 /********* CREATE PET PROFILE *********/
 export const createPetProfile = (pet, history) => dispatch => {
 	axios.post('/api/createpet', pet).then(res => {
-		history.push('/pets')
+		// history.push('/pets')
 	})
 	.catch(err => {
 		dispatch({

@@ -23,6 +23,16 @@ export const createPet = async (req, res)  => {
 		return res.status(400).json(errors);
 	}
 	var filename = ''
+
+	console.log(location.pathname);  // /tmp/test.html
+  console.log(location.hostname);  // localhost
+  console.log(location.search);    // ?blah=2
+  console.log(document.URL);       // http://localhost/tmp/test.html?blah=2#foobar
+  console.log(location.href);      // http://localhost/tmp/test.html?blah=2#foobar
+  console.log(location.protocol);  // http:
+  console.log(location.host);      // localhost
+  console.log(location.origin);    // http://localhost
+  console.log(location.hash);      // #foobar
 	if (req.files.image) {
 		var oldpath = req.files.image.file
 		filename = Date.now() + '-' + req.files.image.filename
