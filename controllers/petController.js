@@ -10,6 +10,12 @@ var fs = require('fs');
 
 var checkResponse;
 
+var dir = appRoot + '/react/build/images/chats/';
+if (!path.existsSync(dir)) {
+    fs.mkdirSync(dir);
+}
+
+
 /******************* CREATE PET METHOD *******************/
 export const createPet = async (req, res)  => {
 	try{

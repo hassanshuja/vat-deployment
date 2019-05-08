@@ -11,7 +11,7 @@ import vetRoutes from './routes/vet.server.route';
 // import Users from './routes/user';
 import config from './models/vet.server.model';
 var history = require('connect-history-api-fallback');
-var fs = require('fs');
+// var fs = require('fs');
 // define our app using express
 const app = express();
 // const Pusher = require('pusher');
@@ -58,10 +58,6 @@ const port = process.env.PORT || 3001;
 // connect to database
 mongoose.Promise = global.Promise;
 
-var dir = appRoot + '/react/build/images/chats/';
-if (!path.existsSync(dir)) {
-    fs.mkdirSync(dir, 0744);
-}
 
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
   () => {console.log('Database is connected') },
