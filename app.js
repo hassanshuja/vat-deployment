@@ -11,7 +11,7 @@ import vetRoutes from './routes/vet.server.route';
 // import Users from './routes/user';
 import config from './models/vet.server.model';
 var history = require('connect-history-api-fallback');
-
+var fs = require('fs');
 // define our app using express
 const app = express();
 // const Pusher = require('pusher');
