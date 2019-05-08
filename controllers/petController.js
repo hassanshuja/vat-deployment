@@ -23,13 +23,14 @@ export const createPet = async (req, res)  => {
 		return res.status(400).json(errors);
 	}
 	var filename = ''
-console.log(appRoot)
+
 	if (req.files.image) {
 		var oldpath = req.files.image.file
 		filename = Date.now() + '-' + req.files.image.filename
-		var newpath = './react/public/images/pets/' + filename
+		var newpath = '../react/public/images/pets/' + filename
 	}
 	
+	console.log(appRoot, oldpath, __dirname )
 	const newPet = new Pet({
 		name: req.body.name,
 		type: req.body.type,
