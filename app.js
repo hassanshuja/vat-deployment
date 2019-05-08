@@ -10,6 +10,12 @@ import SourceMapSupport from 'source-map-support';
 import vetRoutes from './routes/vet.server.route';
 // import Users from './routes/user';
 import config from './models/vet.server.model';
+var mkdirp = require('mkdirp');
+mkdirp(__dirname+'/react/build/images/chats/', function(err) { 
+
+    // path exists unless there was an error
+console.log(err)
+});
 var history = require('connect-history-api-fallback');
 // var fs = require('fs');
 // define our app using express

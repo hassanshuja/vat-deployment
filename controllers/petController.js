@@ -3,17 +3,14 @@ const validateChatRegisterInput = require('../validation/registerpetchat');
 const Pet = require('../models/Pet')
 const Chat = require('../models/Chat')
 const Busboy = require('busboy')
+import path from 'path';
+
 // var multer  = require('multer')
 // var upload = multer({ dest: 'uploads' })
 const formidable = require('formidable');
 var fs = require('fs');
 
 var checkResponse;
-
-var dir = appRoot + '/react/build/images/chats/';
-if (!path.existsSync(dir)) {
-    fs.mkdirSync(dir);
-}
 
 
 /******************* CREATE PET METHOD *******************/
