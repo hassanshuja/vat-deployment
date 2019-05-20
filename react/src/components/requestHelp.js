@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import MediaHandler from './MediaHandler';
 import Pusher from 'pusher-js';
 import Peer from 'simple-peer';
+import { hashHistory } from 'react-router';
 // import queryString from 'query-string'
 // import Spinner from 'react-bootstrap/Spinner'
 import { getRequestDetails } from '../actions/admin/requests'
@@ -38,6 +39,7 @@ class RequestHelp extends Component {
 			this.props.setClick(this.callTo);
 		}
 		this.pauseCall = this.pauseCall.bind(this)
+		this.stopCall = this.stopCall.bind(this)
 		this.resumeCall = this.resumeCall.bind(this)
 		// this.connectedCall = this.connectedCall.bind(this)
 	}
@@ -172,6 +174,23 @@ class RequestHelp extends Component {
 		})
 		this.myVideo.pause()
 	}
+
+	stopCall() {
+
+		var localStream = this.user.stream
+		// localStream.getVideoTracks()[0].stop();
+		localStream.getTracks().forEach(track => track.stop());
+		if(this.props.auth.user.role === 'user'){
+			this.props.history.push('/pets')
+		}
+		else{
+			console.log(this.context)
+			// window.history.push('/requestlist')
+		window.location = 'requestlist';
+
+		}
+
+	}
 	
 	resumeCall() {
 		this.setState({
@@ -187,6 +206,7 @@ class RequestHelp extends Component {
 		const { btnFinish } = this.state
 		// const { loader } = this.state
 		// const { userType } = this.state
+		console.log(this.props)
 		return ( 
 			<div className="main-dasboard">
 				<div className="container mt-5">
@@ -200,6 +220,10 @@ class RequestHelp extends Component {
 						</div>
 						<div className="video-options text-center">
 							<div className="container">
+								<button className="btn-custom btn-call" onClick={ this.stopCall }>
+									<span>End Call</span>
+								</button>
+
 								{ btnPause &&
 									(
 										<button className="btn-custom btn-call" onClick={ this.pauseCall }>
@@ -228,6 +252,7 @@ RequestHelp.propTypes = {
 	requests: PropTypes.object,
 	pets: PropTypes.object
 }
+
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,

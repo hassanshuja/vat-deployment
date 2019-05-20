@@ -12,7 +12,6 @@ var fs = require('fs');
 
 var checkResponse;
 
-
 /******************* CREATE PET METHOD *******************/
 export const createPet = async (req, res)  => {
 	try{
@@ -30,10 +29,9 @@ export const createPet = async (req, res)  => {
 	if (req.files.image) {
 		var oldpath = req.files.image.file
 		filename = Date.now() + '-' + req.files.image.filename
-		var newpath = appRoot + '/react/build/images/pets/' + filename
+		var newpath = './react/public/images/pets/' + filename
 	}
 	
-	console.log(appRoot, oldpath, appRoot )
 	const newPet = new Pet({
 		name: req.body.name,
 		type: req.body.type,
@@ -79,14 +77,14 @@ export const updatePet = async (req, res)  => {
 				if(req.files.newImage) {
 					/* REMOVE OLD IMAGE */
 					if(req.body.image) {
-						if(fs.existsSync(appRoot + '/react/build/images/pets/' + req.body.image)) {
-							fs.unlinkSync(appRoot + '/react/build/images/pets/' + req.body.image)
+						if(fs.existsSync('./react/public/images/pets/' + req.body.image)) {
+							fs.unlinkSync('./react/public/images/pets/' + req.body.image)
 						}
 					}
 					var oldpath = req.files.newImage.file
 					/*  UPLOAD NEW IMAGE */
 					var filename = Date.now() + '-' + req.files.newImage.filename
-					var newpath = appRoot + '/react/build/images/pets/' + filename
+					var newpath = './react/public/images/pets/' + filename
 					fs.createReadStream(oldpath);
 					var readerStream = fs.createReadStream(oldpath);
 					var writerStream = fs.createWriteStream(newpath);
@@ -124,15 +122,15 @@ export const deletePet = async (req, res) => {
 			res.map(data => {
 				if(data.images && data.images.length > 0) {
 					data.images.map(image => {
-						if(fs.existsSync(appRoot + '/react/build/images/chats/' + image.name)) {
-							fs.unlinkSync(appRoot + '/react/build/images/chats/' + image.name)
+						if(fs.existsSync('./react/public/images/chats/' + image.name)) {
+							fs.unlinkSync('./react/public/images/chats/' + image.name)
 						}
 					})
 				}
 				if(data.videos && data.videos.length > 0) {
 					data.videos.map(video => {
-						if(fs.existsSync(appRoot + '/react/build/images/chats/' + video)) {
-							fs.unlinkSync(appRoot + '/react/build/images/chats/' + video)
+						if(fs.existsSync('./react/public/images/chats/' + video)) {
+							fs.unlinkSync('./react/public/images/chats/' + video)
 						}
 					})
 				}
@@ -142,8 +140,8 @@ export const deletePet = async (req, res) => {
 		// REMOVE PET
 		pet.remove().then(pet => {
 			if (petImage) {
-				if(fs.existsSync(appRoot + '/react/build/images/pets/' + petImage)) {
-					fs.unlinkSync(appRoot + '/react/build/images/pets/' + petImage)
+				if(fs.existsSync('./react/public/images/pets/' + petImage)) {
+					fs.unlinkSync('./react/public/images/pets/' + petImage)
 				}
 			}
 			res.json(pet)
@@ -151,7 +149,7 @@ export const deletePet = async (req, res) => {
 	})
 	// Pet.remove({ _id: petId}).then(pet => {
 	// 	if (petImage) {
-	// 		fs.unlinkSync('../react/build/images/pets/' + petImage)
+	// 		fs.unlinkSync('../react/public/images/pets/' + petImage)
 	// 	}
 	// 	res.json(pet)
 	// })
@@ -225,7 +223,7 @@ export const registerPetChat = async (req, res)  => {
 			Images.map((image, index) => {
 				var filename = Date.now() + '-' + image.path
 				filename = filename.replace(/\s+/g, '-').toLowerCase();
-				var newpath = appRoot + '/react/build/images/chats/' + filename
+				var newpath = './react/public/images/chats/' + filename
 				var img = image.buffer
 				var data = img.replace(/^data:image\/\w+;base64,/, "");
 				var buf = Buffer.from(data, 'base64');
@@ -244,7 +242,7 @@ export const registerPetChat = async (req, res)  => {
 			var oldpath = req.files.videos.file
 			videoname = Date.now() + '-' + req.files.videos.filename
 			videoname = videoname.replace(/\s+/g, '-').toLowerCase();
-			var newpath = appRoot + '/react/build/images/chats/' + videoname
+			var newpath = './react/public/images/chats/' + videoname
 			fs.createReadStream(oldpath);
 			var readerStream = fs.createReadStream(oldpath);
 			var writerStream = fs.createWriteStream(newpath);

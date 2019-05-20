@@ -8,6 +8,7 @@ export const getAllRequests = () => dispatch => {
       var totalpage = res.data.pages
         dispatch(setAllRequest(requestList));
         dispatch(totalPage(totalpage))
+        dispatch(history(history))
     })
     .catch(err => {
       dispatch({
@@ -59,6 +60,13 @@ export const totalPage = totalpage => {
   return {
     type: TOTAL_PAGES,
     payload:totalpage
+  }
+}
+
+export const history = history => {
+  return {
+    type: 'HISTORY',
+    payload:history
   }
 }
 /************ DISPATCH METHODS ************/
