@@ -265,11 +265,11 @@ ul.pets-list {
   float: left;
 }
 .pet-register .card-header {
-  border-color: #007bff;
+  border-color: #e82f6291;
   margin: -1px;
   border: none;
   text-align: center;
-  background: #007bff;
+  background: #e82f6291;
   color: white;
 }
 .pet-register .card-header button.back {
@@ -279,7 +279,16 @@ ul.pets-list {
     color: white;
     border: none;
 }
-
+ /* {
+  border-color: #e82f6291;
+  background: #e82f6291;
+} */
+.step-1 .btn-primary, .step-1 .btn-primary:hover, .step-1 .btn-primary:active, .step-1 .btn-primary:focus,
+.step-2 .btn-primary, .step-2 .btn-primary:hover, .step-2 .btn-primary:active, .step-2 .btn-primary:focus
+{
+  border-color: #ec7aa7 !important;
+  background: #ec7aa7 !important;
+}
 
 /* Side bar */
 

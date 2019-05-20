@@ -17,6 +17,16 @@ var size = 10
 var query = {}
 var response = {}
 
+var petImagePath;
+var chatImagePath;
+if(process.env.NODE_ENV === "production"){
+	petImagePath = '/react/build/images/pets/'
+	chatImagePath = '/react/build/images/chats/'
+	// ../react/public/images/pets/	
+} else {
+	petImagePath = '/react/public/images/pets/'
+	chatImagePath = '/react/public/images/chats/'
+}
 var checkResponse;
 export const register = async (req, res)  => {
 	try{
@@ -250,15 +260,15 @@ export const deleteUser = async (req, res) => {
 						res.map(data => {
 							if(data.images && data.images.length > 0) {
 								data.images.map(image => {
-									if(fs.existsSync('../react/public/images/chats/' + image.name)) {
-										fs.unlinkSync('../react/public/images/chats/' + image.name)
+									if(fs.existsSync(chatImagePath + image.name)) {
+										fs.unlinkSync(chatImagePath + image.name)
 									}
 								})
 							}
 							if(data.videos && data.videos.length > 0) {
 								data.videos.map(video => {
-									if(fs.existsSync('../react/public/images/chats/' + video)) {
-										fs.unlinkSync('../react/public/images/chats/' + video)
+									if(fs.existsSync(chatImagePath + video)) {
+										fs.unlinkSync(chatImagePath + video)
 									}
 								})
 							}
@@ -266,8 +276,8 @@ export const deleteUser = async (req, res) => {
 					})
 					Chat.deleteMany({ _id: { $in: chats}}, (err, chatt) => {})
 					if(pet2.image) {
-						if(fs.existsSync('../react/public/images/pets/' + pet2.image)) {
-							fs.unlinkSync('../react/public/images/pets/' + pet2.image)
+						if(fs.existsSync(petImagePath + pet2.image)) {
+							fs.unlinkSync(petImagePath + pet2.image)
 						}
 					}
 					// REMOVE PET

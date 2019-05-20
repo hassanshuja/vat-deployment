@@ -11,7 +11,16 @@ const formidable = require('formidable');
 var fs = require('fs');
 
 var checkResponse;
-
+var petImagePath;
+var chatImagePath;
+if(process.env.NODE_ENV === "production"){
+	petImagePath = '/react/build/images/pets/'
+	chatImagePath = '/react/build/images/chats/'
+	// ../react/public/images/pets/	
+} else {
+	petImagePath = '/react/public/images/pets/'
+	chatImagePath = '/react/public/images/chats/'
+}
 
 /******************* CREATE PET METHOD *******************/
 export const createPet = async (req, res)  => {
@@ -30,7 +39,7 @@ export const createPet = async (req, res)  => {
 	if (req.files.image) {
 		var oldpath = req.files.image.file
 		filename = Date.now() + '-' + req.files.image.filename
-		var newpath = appRoot + '/react/build/images/pets/' + filename
+		var newpath = appRoot + petImagePath + filename
 	}
 	
 	console.log(appRoot, oldpath, appRoot )
@@ -79,14 +88,14 @@ export const updatePet = async (req, res)  => {
 				if(req.files.newImage) {
 					/* REMOVE OLD IMAGE */
 					if(req.body.image) {
-						if(fs.existsSync(appRoot + '/react/build/images/pets/' + req.body.image)) {
-							fs.unlinkSync(appRoot + '/react/build/images/pets/' + req.body.image)
+						if(fs.existsSync(appRoot + petImagePath + req.body.image)) {
+							fs.unlinkSync(appRoot + petImagePath + req.body.image)
 						}
 					}
 					var oldpath = req.files.newImage.file
 					/*  UPLOAD NEW IMAGE */
 					var filename = Date.now() + '-' + req.files.newImage.filename
-					var newpath = appRoot + '/react/build/images/pets/' + filename
+					var newpath = appRoot + petImagePath + filename
 					fs.createReadStream(oldpath);
 					var readerStream = fs.createReadStream(oldpath);
 					var writerStream = fs.createWriteStream(newpath);
@@ -124,15 +133,15 @@ export const deletePet = async (req, res) => {
 			res.map(data => {
 				if(data.images && data.images.length > 0) {
 					data.images.map(image => {
-						if(fs.existsSync(appRoot + '/react/build/images/chats/' + image.name)) {
-							fs.unlinkSync(appRoot + '/react/build/images/chats/' + image.name)
+						if(fs.existsSyc(appRoot + chatImagePath + image.name)) {
+							fs.unlinkSyc(appRoot + chatImagePath + image.name)
 						}
 					})
 				}
 				if(data.videos && data.videos.length > 0) {
 					data.videos.map(video => {
-						if(fs.existsSync(appRoot + '/react/build/images/chats/' + video)) {
-							fs.unlinkSync(appRoot + '/react/build/images/chats/' + video)
+						if(fs.existsSyc(appRoot + chatImagePath + video)) {
+							fs.unlinkSyc(appRoot + chatImagePath + video)
 						}
 					})
 				}
@@ -142,8 +151,8 @@ export const deletePet = async (req, res) => {
 		// REMOVE PET
 		pet.remove().then(pet => {
 			if (petImage) {
-				if(fs.existsSync(appRoot + '/react/build/images/pets/' + petImage)) {
-					fs.unlinkSync(appRoot + '/react/build/images/pets/' + petImage)
+				if(fs.existsSync(appRoot + petImagePath + petImage)) {
+					fs.unlinkSync(appRoot + petImagePath + petImage)
 				}
 			}
 			res.json(pet)
@@ -225,7 +234,7 @@ export const registerPetChat = async (req, res)  => {
 			Images.map((image, index) => {
 				var filename = Date.now() + '-' + image.path
 				filename = filename.replace(/\s+/g, '-').toLowerCase();
-				var newpath = appRoot + '/react/build/images/chats/' + filename
+				var newpath= appRoot + chatImagePath + filename
 				var img = image.buffer
 				var data = img.replace(/^data:image\/\w+;base64,/, "");
 				var buf = Buffer.from(data, 'base64');
@@ -244,7 +253,7 @@ export const registerPetChat = async (req, res)  => {
 			var oldpath = req.files.videos.file
 			videoname = Date.now() + '-' + req.files.videos.filename
 			videoname = videoname.replace(/\s+/g, '-').toLowerCase();
-			var newpath = appRoot + '/react/build/images/chats/' + videoname
+			var newpath= appRoot + chatImagePath + videoname
 			fs.createReadStream(oldpath);
 			var readerStream = fs.createReadStream(oldpath);
 			var writerStream = fs.createWriteStream(newpath);
