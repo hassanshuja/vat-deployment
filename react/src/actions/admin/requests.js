@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ERRORS, GET_ALL_REQUESTS, TOTAL_PAGES, GET_REQUEST_DETAILS, ACCEPTED_CALL_ADMIN } from '../types';
+import { GET_ERRORS, GET_ALL_REQUESTS, TOTAL_PAGES, GET_REQUEST_DETAILS, ACCEPTED_CALL_ADMIN, CONNECTED_PEER } from '../types';
 
 export const getAllRequests = () => dispatch => {
   axios.get('/api/getAllrequests')
@@ -8,6 +8,7 @@ export const getAllRequests = () => dispatch => {
       var totalpage = res.data.pages
         dispatch(setAllRequest(requestList));
         dispatch(totalPage(totalpage))
+        dispatch(history(history))
     })
     .catch(err => {
       dispatch({
@@ -48,6 +49,15 @@ export const getRequestDetails = (id) => dispatch => {
 }
 
 /************ DISPATCH METHODS ************/
+
+/********  SET CONNECTED PEER ********/
+export const connectedPeer = connectedPeer => {
+	return {
+		type: CONNECTED_PEER,
+		connectedPeer: connectedPeer
+	}
+}
+
 export const setAllRequest = requestList => {
   return {
     type: GET_ALL_REQUESTS,
@@ -59,6 +69,13 @@ export const totalPage = totalpage => {
   return {
     type: TOTAL_PAGES,
     payload:totalpage
+  }
+}
+
+export const history = history => {
+  return {
+    type: 'HISTORY',
+    payload:history
   }
 }
 /************ DISPATCH METHODS ************/

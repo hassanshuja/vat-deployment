@@ -6,7 +6,8 @@ const initialState = {
   pendingRequestList: [],
   totalpage: null,
   requestDetails: null,
-  userOnCall: null
+  userOnCall: null,
+  history:null
 }
 
 export default function (state= initialState, action) {
@@ -30,6 +31,11 @@ export default function (state= initialState, action) {
       return {
         ...state,
         totalpage: action.payload
+      }
+      case 'HISTORY':
+      return {
+        ...state,
+        history: action.payload
       }
     case ACCEPTED_CALL_ADMIN:
       return {

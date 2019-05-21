@@ -42,7 +42,6 @@ export const createPet = async (req, res)  => {
 		var newpath = appRoot + petImagePath + filename
 	}
 	
-	console.log(appRoot, oldpath, appRoot )
 	const newPet = new Pet({
 		name: req.body.name,
 		type: req.body.type,
@@ -160,7 +159,7 @@ export const deletePet = async (req, res) => {
 	})
 	// Pet.remove({ _id: petId}).then(pet => {
 	// 	if (petImage) {
-	// 		fs.unlinkSync('../react/build/images/pets/' + petImage)
+	// 		fs.unlinkSync('../react/public/images/pets/' + petImage)
 	// 	}
 	// 	res.json(pet)
 	// })

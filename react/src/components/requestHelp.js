@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import MediaHandler from './MediaHandler';
 import Pusher from 'pusher-js';
 import Peer from 'simple-peer';
+import { hashHistory } from 'react-router';
 // import queryString from 'query-string'
 // import Spinner from 'react-bootstrap/Spinner'
-import { getRequestDetails } from '../actions/admin/requests'
+import { getRequestDetails, connectedPeer } from '../actions/admin/requests'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPause, faStop } from '@fortawesome/free-solid-svg-icons'
 
@@ -20,7 +21,8 @@ class RequestHelp extends Component {
 			otherUserid: null,
 			btnPause: true,
 			btnResume: false,
-			btnFinish: true
+			btnFinish: true,
+			chatId: null
 			// loader: false,
 			// userType: null
 		}
@@ -38,6 +40,7 @@ class RequestHelp extends Component {
 			this.props.setClick(this.callTo);
 		}
 		this.pauseCall = this.pauseCall.bind(this)
+		this.stopCall = this.stopCall.bind(this)
 		this.resumeCall = this.resumeCall.bind(this)
 		// this.connectedCall = this.connectedCall.bind(this)
 	}
@@ -101,7 +104,7 @@ class RequestHelp extends Component {
 	}
 
 	setupPusher() {
-		// Pusher.logToConsole = true;
+		Pusher.logToConsole = true;
 		this.pusher = new Pusher(APP_KEY, {
 			authEndpoint: '/api/pusher/auth',
 			cluster: 'ap2',
@@ -121,6 +124,15 @@ class RequestHelp extends Component {
 				peer = this.startPeer(signal.userId, false);
 			}
 			peer.signal(signal.data);
+		});
+		this.channel.bind(`client-endcall`, (signal) => {
+			if (this.props.auth.user.role === 'admin') {
+				let peer = this.peers[signal.userId];
+				if (peer) {
+					peer.destroy()
+				}
+				window.location = 'requestlist';
+			}
 		});
 	}
 
@@ -163,6 +175,7 @@ class RequestHelp extends Component {
 
 	callTo(userId) {
 		this.peers[userId] = this.startPeer(userId);
+		this.props.connectedPeer(this.peers[userId])
 	}
 
 	pauseCall() {
@@ -171,6 +184,35 @@ class RequestHelp extends Component {
 			btnResume: true
 		})
 		this.myVideo.pause()
+	}
+
+	stopCall() {
+		var localStream = this.user.stream
+		if(this.props.auth.user.role === 'user'){
+			this.channel.trigger(`client-endcall`, {
+				type: 'signal',
+				userId: this.user.id,
+				action: 'endcall'
+			});
+			this.props.history.push('/pets')
+		}
+		if (this.props.auth.user.role === 'admin') {
+			var peerVal = this.peers[Object.keys(this.peers)[0]];
+			peerVal.destroy()
+			window.location = 'requestlist';
+		}
+		// // localStream.getVideoTracks()[0].stop();
+		// localStream.getTracks().forEach(track => track.stop());
+		// if(this.props.auth.user.role === 'user'){
+		// 	this.props.history.push('/pets')
+		// }
+		// else{
+		// 	console.log(this.context)
+		// 	// window.history.push('/requestlist')
+		// window.location = 'requestlist';
+
+		// }
+
 	}
 	
 	resumeCall() {
@@ -181,12 +223,17 @@ class RequestHelp extends Component {
 		this.myVideo.play()
 	}
 
+	componentWillReceiveProps(nextProps) {
+		console.log(nextProps)
+	}
+
 	render() { 
 		const { btnPause } = this.state
 		const { btnResume } = this.state
 		const { btnFinish } = this.state
 		// const { loader } = this.state
 		// const { userType } = this.state
+		console.log(this.props)
 		return ( 
 			<div className="main-dasboard">
 				<div className="container mt-5">
@@ -200,6 +247,10 @@ class RequestHelp extends Component {
 						</div>
 						<div className="video-options text-center">
 							<div className="container">
+								<button className="btn-custom btn-call" onClick={ this.stopCall }>
+									<span>End Call</span>
+								</button>
+
 								{ btnPause &&
 									(
 										<button className="btn-custom btn-call" onClick={ this.pauseCall }>
@@ -226,13 +277,16 @@ class RequestHelp extends Component {
 RequestHelp.propTypes = {
 	auth: PropTypes.object.isRequired,
 	requests: PropTypes.object,
-	pets: PropTypes.object
+	pets: PropTypes.object,
+	users: PropTypes.object
 }
+
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 	requests: state.requests,
-	pets: state.pets
+	pets: state.pets,
+	users: state.users
 })
 
-export  default connect(mapStateToProps, { getRequestDetails })(RequestHelp)
+export  default connect(mapStateToProps, { getRequestDetails, connectedPeer })(RequestHelp)
